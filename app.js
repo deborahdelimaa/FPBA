@@ -22,11 +22,14 @@ app.use("/api", indexRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
-const projectRoutes = require("./routes/project.routes")
-app.use("/api", isAuthenticated, projectRoutes)
+const userRoutes = require("./routes/user.routes");
+app.use("/auth",isAuthenticated, userRoutes);
+
+const productRoutes = require("./routes/product.routes")
+app.use("/api", isAuthenticated, productRoutes)
  
-const taskRoutes = require("./routes/task.routes")
-app.use("/api", taskRoutes);
+const reviewRoutes = require("./routes/review.routes")
+app.use("/api", reviewRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
