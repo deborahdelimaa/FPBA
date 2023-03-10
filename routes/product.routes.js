@@ -8,14 +8,14 @@ const fileUploader = require("../config/cloudinary.config");
 
 // Create
 router.post("/products", fileUploader.single("img"), async (req, res, next)=> {
-    const {name, description, condition, category, price, img, echange, sold, seller, buyer} = req.body;
+    const {name, description, condition, category, price, img, exchange, sold, seller, buyer} = req.body;
     try {
-    const product = await Product.create({name, description, condition, category, price, img, echange, sold, seller, buyer})
+    const product = await Product.create({name, description, condition, category, price, img, exchange, sold, seller, buyer})
         if(!req.file){
             next(new Error("No file uploaded!"));
             return;
         }
-        res.json({product, fileUrl:req.file.path})
+        res.json(product)
     } catch (error) {
         console.log(error)
         res.json(error)

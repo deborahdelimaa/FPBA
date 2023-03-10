@@ -26,7 +26,7 @@ const userRoutes = require("./routes/user.routes");
 app.use("/auth",isAuthenticated, userRoutes);
 
 const productRoutes = require("./routes/product.routes")
-app.use("/api", isAuthenticated, productRoutes)
+app.use("/api", productRoutes)
  
 const reviewRoutes = require("./routes/review.routes")
 app.use("/api", reviewRoutes);

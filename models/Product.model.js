@@ -15,6 +15,7 @@ const productSchema = new Schema(
       required: true,
     },
     category: {
+      type: String,
       enum: [
         "Vehicles",
         "Technology",
