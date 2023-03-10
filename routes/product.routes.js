@@ -2,17 +2,20 @@ const router = require("express").Router();
 const Product = require("../models/Product.model");
 const Review = require("../models/Review.model");
 const mongoose = require("mongoose");
+const fileUploader = require("../config/cloudinary.config");
 
 
 
 // Create
-router.post("/products", async (req, res, next)=> {
+router.post("/products", fileUploader.single("img"), async (req, res, next)=> {
     const {name, description, condition, category, price, img, echange, sold, seller, buyer} = req.body;
     try {
-
-        const product = await Product.create({name, description, condition, category, price, img, echange, sold, seller, buyer})
-
-        res.json(product)
+    const product = await Product.create({name, description, condition, category, price, img, echange, sold, seller, buyer})
+        if(!req.file){
+            next(new Error("No file uploaded!"));
+            return;
+        }
+        res.json({product, fileUrl:req.file.path})
     } catch (error) {
         console.log(error)
         res.json(error)
@@ -44,11 +47,16 @@ router.get("/products/:id", async (req, res, next)=> {
 })
 
 // Update
-router.put("/products/:id", async (req, res, next)=> {
+router.put("/products/:id", fileUploader.single("img") , async (req, res, next)=> {
     const {id} = req.params;
     const {name, description, condition, category, price, img, echange, sold, seller, buyer} = req.body;
     if(!mongoose.Types.ObjectId.isValid(id)){
         res.json("The provided product id is not valid ")
+
+        if(!req.file){
+            next(new Error("No file uploaded!"));
+            return
+        }
     }
     try {
         const updatedProduct = await Product.findByIdAndUpdate(id, {name, description, condition, category, price, img, echange, sold, seller, buyer}, {new:true})

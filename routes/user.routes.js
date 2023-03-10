@@ -3,14 +3,17 @@ const Product = require("../models/Product.model");
 const Review = require("../models/Review.model");
 const mongoose = require("mongoose");
 const User = require ("../models/User.model")
+const fileUploader = require("../config/cloudinary.config");
 
 // Create
-router.post("/user", async (req, res, next)=> {
+router.post("/user",fileUploader.single("img"), async (req, res, next)=> {
     const {name, description, condition, category, price, img, echange, sold, seller, buyer} = req.body;
     try {
-
         const product = await Product.create({name, email, password, img, price, img, soldProduct, boughtProduct, reviews})
-
+        if(!req.file){
+       next(new Error ("No file uploaded"));
+       return;     
+        }
         res.json(product)
     } catch (error) {
         console.log(error)
