@@ -45,7 +45,7 @@ router.get("/products/:id", async (req, res, next)=> {
         
     }
 })
-
+/* ok */
 // Update
 router.put("/products/:id", fileUploader.single("img") , async (req, res, next)=> {
     const {id} = req.params;
