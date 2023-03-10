@@ -34,7 +34,6 @@ const productSchema = new Schema(
     },
     sold: {
       type: Boolean,
-      required: true,
     },
     seller: {
       type: Schema.Types.ObjectId,
