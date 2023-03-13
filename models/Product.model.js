@@ -31,7 +31,6 @@ const productSchema = new Schema(
     },
     exchange: {
       type: Boolean,
-      
     },
     sold: {
       type: Boolean,
@@ -50,4 +49,6 @@ const productSchema = new Schema(
   }
 );
 
-module.exports = model("Product", productSchema);
+const Product = model("Product", productSchema);
+
+module.exports = Product;
