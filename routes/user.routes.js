@@ -21,7 +21,16 @@ router.post("/user",fileUploader.single("img"), async (req, res, next)=> {
     }
 });
 
+// Read (all)
+router.get("/user", async (req, res, next)=> {
 
+    try {
+        const user = await User.find()
+        res.json(user)
+    } catch (error) {
+        res.json(error)
+    }
+});
 
 
 // Update

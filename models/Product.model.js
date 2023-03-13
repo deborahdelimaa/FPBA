@@ -22,7 +22,7 @@ const productSchema = new Schema(
         "Furniture",
         "Sport",
         "Animals",
-        "Others",
+        "Other",
       ],
     },
     price: { type: Number, required: true },
