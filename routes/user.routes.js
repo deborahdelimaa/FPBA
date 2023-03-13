@@ -19,6 +19,20 @@ router.get("/user/:id", async (req, res, next) => {
   }
 });
 
+// Read (all)
+router.get("/user", async (req, res, next)=> {
+
+    try {
+        const user = await User.find()
+        res.json(user)
+    } catch (error) {
+        res.json(error)
+    }
+});
+
+
+
+
 // Update
 router.put("/user/:id", async (req, res, next) => {
   const { id } = req.params;
