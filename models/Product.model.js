@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const productSchema = new Schema(
   {
@@ -17,12 +17,12 @@ const productSchema = new Schema(
     category: {
       type: String,
       enum: [
-        "Vehicles",
-        "Technology",
-        "Furniture",
-        "Sport",
-        "Animals",
-        "Other",
+        'Vehicles',
+        'Technology',
+        'Furniture',
+        'Sport',
+        'Animals',
+        'Other',
       ],
     },
     price: { type: Number, required: true },
@@ -37,22 +37,26 @@ const productSchema = new Schema(
     },
     seller: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
-    buyer: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-    feedback: [{
-      type: Schema.Types.ObjectId,
-      ref: "Review",
-    }],
+    buyer: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    feedback: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Review',
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
 
-const Product = model("Product", productSchema);
+const Product = model('Product', productSchema);
 
 module.exports = Product;

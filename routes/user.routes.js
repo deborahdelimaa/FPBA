@@ -1,16 +1,16 @@
-const router = require("express").Router();
-const Product = require("../models/Product.model");
-const Review = require("../models/Review.model");
-const mongoose = require("mongoose");
-const User = require("../models/User.model");
-const fileUploader = require("../config/cloudinary.config");
+const router = require('express').Router();
+const Product = require('../models/Product.model');
+const Review = require('../models/Review.model');
+const mongoose = require('mongoose');
+const User = require('../models/User.model');
+const fileUploader = require('../config/cloudinary.config');
 
 // Create
-router.get("/user/:id", async (req, res, next) => {
+router.get('/user/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const findUser = await User.findById(id);
+    const findUser = await User.findById(id).populate('boughtProduct');
 
     res.json(findUser);
   } catch (error) {
@@ -20,21 +20,17 @@ router.get("/user/:id", async (req, res, next) => {
 });
 
 // Read (all)
-router.get("/user", async (req, res, next)=> {
-
-    try {
-        const user = await User.find()
-        res.json(user)
-    } catch (error) {
-        res.json(error)
-    }
+router.get('/user', async (req, res, next) => {
+  try {
+    const user = await User.find();
+    res.json(user);
+  } catch (error) {
+    res.json(error);
+  }
 });
 
-
-
-
 // Update
-router.put("/user/:id", async (req, res, next) => {
+router.put('/user/:id', async (req, res, next) => {
   const { id } = req.params;
   const {
     name,
@@ -47,7 +43,7 @@ router.put("/user/:id", async (req, res, next) => {
     reviews,
   } = req.body;
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.json("The provided product id is not valid ");
+    res.json('The provided product id is not valid ');
   }
   try {
     const updateUser = await User.findByIdAndUpdate(
@@ -71,7 +67,7 @@ router.put("/user/:id", async (req, res, next) => {
 });
 
 //Delete
-router.delete("/user/:id", async (req, res, next) => {
+router.delete('/user/:id', async (req, res, next) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);
