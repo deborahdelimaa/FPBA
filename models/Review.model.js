@@ -2,8 +2,9 @@ const { Schema, model } = require("mongoose");
 
 const reviewSchema = new Schema(
   {
-    creator: {
-      enum: ["Seller", "Buyer"],
+    rating: {
+      type: Number,
+      enum: [1, 2, 3, 4, 5],
     },
     comment: [{ type: String, required: true }],
   },

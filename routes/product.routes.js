@@ -1,12 +1,12 @@
-const router = require('express').Router();
-const Product = require('../models/Product.model');
-const Review = require('../models/Review.model');
-const mongoose = require('mongoose');
-const fileUploader = require('../config/cloudinary.config');
+const router = require("express").Router();
+const Product = require("../models/Product.model");
+const Review = require("../models/Review.model");
+const mongoose = require("mongoose");
+const fileUploader = require("../config/cloudinary.config");
 
 // Create
 router.post(
-  '/products',
+  "/products",
   /* fileUploader.single("img"), */ async (req, res, next) => {
     const {
       name,
@@ -46,9 +46,9 @@ router.post(
 );
 
 // Read (all)
-router.get('/products', async (req, res, next) => {
+router.get("/products", async (req, res, next) => {
   try {
-    const product = await Product.find().populate('seller');
+    const product = await Product.find().populate("seller");
     res.json(product);
   } catch (error) {
     res.json(error);
@@ -56,10 +56,15 @@ router.get('/products', async (req, res, next) => {
 });
 
 //read id
-router.get('/products/:id', async (req, res, next) => {
+router.get("/products/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const product = await Product.findById(id);
+    const product = await Product.findById(id)
+      .populate("feedback")
+      /* .populate({
+        path: "feedback",
+        populate: { path: "comment", model: "Review" },
+      }); */
     res.json(product);
   } catch (error) {
     res.json(error);
@@ -68,8 +73,8 @@ router.get('/products/:id', async (req, res, next) => {
 /* ok */
 // Update
 router.put(
-  '/products/:id',
-  fileUploader.single('img'),
+  "/products/:id",
+  fileUploader.single("img"),
   async (req, res, next) => {
     const { id } = req.params;
     const {
@@ -85,10 +90,10 @@ router.put(
       buyer,
     } = req.body;
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.json('The provided product id is not valid ');
+      res.json("The provided product id is not valid ");
 
       if (!req.file) {
-        next(new Error('No file uploaded!'));
+        next(new Error("No file uploaded!"));
         return;
       }
     }
@@ -117,7 +122,7 @@ router.put(
 );
 
 //Delete
-router.delete('/products/:id', async (req, res, next) => {
+router.delete("/products/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
     const product = await Product.findById(id);
@@ -130,7 +135,7 @@ router.delete('/products/:id', async (req, res, next) => {
 
 // Show bought product list
 
-router.get('/bought-product-list', async (req, res, next) => {
+router.get("/bought-product-list", async (req, res, next) => {
   try {
     const product = await Product.find();
     res.json(product);
@@ -139,7 +144,7 @@ router.get('/bought-product-list', async (req, res, next) => {
   }
 });
 
-router.get('/bought-products-details/:id', async (req, res, next) => {
+router.get("/bought-products-details/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
     const product = await Product.findById(id);

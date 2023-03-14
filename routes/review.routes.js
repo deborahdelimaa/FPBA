@@ -4,13 +4,14 @@ const Review = require("../models/Review.model");
 const Product = require("../models/Product.model");
 
 // Create
-router.post("/review", async (req, res, next) => {
-  const { creator, comment } = req.body;
+router.post("/review/:id", async (req, res, next) => {
+  const { rating, comment } = req.body;
+  const {id} = req.params
   try {
-    const review = await Review.create({ creator, comment });
-    await Review.findByIdAndUpdate(Review, {
+    const review = await Review.create({ rating, comment });
+    await Product.findByIdAndUpdate(id, {
       $push: {
-        review: review._id,
+        feedback: review._id,
       },
     });
     res.json(review);
@@ -31,7 +32,8 @@ router.get("/review", async (req, res, next) => {
 });
 
 // Update
-router.put("/review/:id", async (req, res, next) => {
+
+/* router.put("/review/:id", async (req, res, next) => {
   const { id } = req.params;
   const { creator, comment } = req.body;
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -47,7 +49,7 @@ router.put("/review/:id", async (req, res, next) => {
   } catch (error) {
     res.json(error);
   }
-});
+}); */
 
 //Delete
 router.delete("/review/:id", async (req, res, next) => {
