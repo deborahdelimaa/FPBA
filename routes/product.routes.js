@@ -8,7 +8,7 @@ const fileUploader = require('../config/cloudinary.config');
 // Create
 router.post(
   '/products',
-  /* fileUploader.single("img"), */ async (req, res, next) => {
+  async (req, res, next) => {
     const {
       name,
       description,
@@ -21,6 +21,7 @@ router.post(
       seller,
       buyer,
     } = req.body;
+    console.log(req.body)
     try {
       const product = await Product.create({
         name,
@@ -34,10 +35,7 @@ router.post(
         seller,
         buyer,
       });
-      /*         if(!req.file){
-            next(new Error("No file uploaded!"));
-            return;
-        } */
+      
       res.json(product);
     } catch (error) {
       console.log(error);
@@ -174,5 +172,37 @@ router.get('/buy/:userId/:productId', async (req, res, next) => {
     res.json(error);
   }
 });
+
+
+router.get('/products/favorites', async (req, res, next) => {
+    try {
+      const product = await Product.find();
+      res.json(product);
+    } catch (error) {
+      res.json(error);
+    }
+  });
+
+
+
+router.get('/favorites/:userId/:productId', async (req, res, next) => {
+    const { userId, productId } = req.params;
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+          $push: {
+            favorite: productId,
+          },
+        },
+        { new: true }
+      );
+      res.json(updatedUser);
+    } catch (error) {
+      console.log(error);
+      res.json(error);
+    }
+  });
+  
 
 module.exports = router;

@@ -10,7 +10,7 @@ router.get('/user/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const findUser = await User.findById(id).populate('boughtProduct');
+    const findUser = await User.findById(id).populate('boughtProduct').populate('favorite');
 
     res.json(findUser);
   } catch (error) {
@@ -41,6 +41,7 @@ router.put('/user/:id', async (req, res, next) => {
     soldProduct,
     bougthProduct,
     reviews,
+    favorite,
   } = req.body;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.json('The provided product id is not valid ');
@@ -57,6 +58,7 @@ router.put('/user/:id', async (req, res, next) => {
         soldProduct,
         bougthProduct,
         reviews,
+        favorite,
       },
       { new: true }
     );

@@ -44,6 +44,12 @@ const userSchema = new Schema(
         ref: 'Review',
       },
     ],
+    favorite: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+      },
+    ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
