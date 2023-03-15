@@ -4,7 +4,7 @@ const Review = require('../models/Review.model');
 const User = require('../models/User.model');
 const mongoose = require('mongoose');
 const fileUploader = require('../config/cloudinary.config');
-
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 // Create
 router.post(
   '/products',
@@ -205,12 +205,24 @@ router.get('/favorites/:userId/:productId', async (req, res, next) => {
   });
   
   
-  router.delete('/favorites/:id', async (req, res, next) => {
-    const { id } = req.params;
+  router.delete('/favorites/:productId', isAuthenticated, async (req, res, next) => {
+    const { productId } = req.params;
+    const userId = req.payload._id
     try {
-      const user  = await User.findById(id);
-      await User.findByIdAndDelete(id);
-      res.json({ message: `Review with the id ${id} deleted successfully` });
+        const myProduct = await Product.findById(productId)
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            {
+              $pull: {
+                favorite: myProduct._id,
+              },
+            },
+            { new: true }
+          );
+          console.log(updatedUser)
+      /* const user  = await User.findById(id);
+      await User.findByIdAndDelete(id); */
+      res.json({ message: `Product with the id ${productId} deleted successfully` });
     } catch (error) {
       res.json(error);
     }
