@@ -204,5 +204,16 @@ router.get('/favorites/:userId/:productId', async (req, res, next) => {
     }
   });
   
+  
+  router.delete('/favorites/:id', async (req, res, next) => {
+    const { id } = req.params;
+    try {
+      const product = await User.findById(id);
+      await User.findByIdAndDelete(id);
+      res.json({ message: `Review with the id ${id} deleted successfully` });
+    } catch (error) {
+      res.json(error);
+    }
+  });
 
 module.exports = router;
