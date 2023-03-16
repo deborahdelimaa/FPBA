@@ -47,7 +47,17 @@ router.post(
 // Read (all)
 router.get('/products', async (req, res, next) => {
   try {
-    const product = await Product.find().populate('seller');
+    const product = await Product.find().populate('seller'); 
+    res.json(product);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+// Read (all)
+router.get('/my-products', async (req, res, next) => {
+  try {
+    const product = await Product.find()
     res.json(product);
   } catch (error) {
     res.json(error);
@@ -209,12 +219,12 @@ router.get('/favorites/:userId/:productId', async (req, res, next) => {
     const { productId } = req.params;
     const userId = req.payload._id
     try {
-        const myProduct = await Product.findById(productId)
+     
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             {
               $pull: {
-                favorite: myProduct._id,
+                favorite: productId,
               },
             },
             { new: true }
